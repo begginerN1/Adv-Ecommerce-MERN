@@ -34,7 +34,7 @@
   top: 23rem;
   left: 50%;
   opacity: 0;
-  width: 50%;
+  width: 40%;
   // width: 500px;
   // height: 200px;
   padding: 3rem;
@@ -75,7 +75,7 @@
   height: 2px;
   background: #50dfdb;
 
-  animation: span1 3s linear infinite;
+  animation: span1 5s linear infinite;
 }
 .content .span2:before {
   content: "";
@@ -85,7 +85,7 @@
   width: 30%;
   height: 2px;
   background: #50dfdb;
-  animation: span2 3s linear infinite;
+  animation: span2 5s linear infinite;
 }
 .content .span3:before {
   content: "";
@@ -95,7 +95,7 @@
   width: 2px;
   height: 30%;
   background: #50dfdb;
-  animation: span3 3s linear infinite;
+  animation: span3 5s linear infinite;
 }
 .content .span4:before {
   content: "";
@@ -105,7 +105,7 @@
   width: 2px;
   height: 30%;
   background: #50dfdb;
-  animation: span4 3s linear infinite;
+  animation: span4 5s linear infinite;
 }
 
 @keyframes span1 {
