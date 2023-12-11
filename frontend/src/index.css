@@ -520,3 +520,12 @@ a:hover {
 .--cursor {
   cursor: pointer;
 }
+
+.img-vako{
+  transition: transform 500ms ease;
+}
+
+.img-vako:hover{
+  transform: scale(106%);
+  overflow: hidden;
+}
