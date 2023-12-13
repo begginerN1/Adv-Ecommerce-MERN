@@ -13,12 +13,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
-    origin: ['http://localhost:4000', 'https://shovikoapp.vercel.app'],
+    origin: ['http://localhost:4000', 'https://shovikoapp.vercel.app', 'http://localhost:3000' ],
     credentials: true
 }));
 
 // Routes
-app.use('/api/user', userRoute);
+app.use('/api/users', userRoute);
 
 app.get('/', (req, res) => {
     res.send('hi valeri from backend')

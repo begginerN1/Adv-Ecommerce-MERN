@@ -5,3 +5,10 @@ export const shortenText = (text, n) => {
     }
     return text
 }
+
+//validate email
+export const validateEmail = (email) => {
+    return email.toLowerCase().match(
+        /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
+    )
+}

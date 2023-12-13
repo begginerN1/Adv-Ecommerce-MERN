@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import styles from './Header.module.scss';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaCartShopping } from "react-icons/fa6";
 import { BiMenuAltRight } from "react-icons/bi";
 import { IoIosClose } from "react-icons/io";
+import { useDispatch } from 'react-redux';
+import { RESET_AUTH, logout } from '../../redux/features/auth/authSlice';
+import ShowOnLogin, { ShowOnLogout } from '../hiddenLink/hiddenLink';
+
 
 export const logo = (
    
@@ -21,9 +25,11 @@ const Header = () => {
 
     const [showMenu, setShowMenu] = useState(false);
     const [scrollPage, setScrollPage] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const fixedNavBar = () => {
-        if (window.scrollY > 800) {
+        if (window.scrollY > 50) {
             setScrollPage(true);
         } else {
             setScrollPage(false)
@@ -37,6 +43,12 @@ const Header = () => {
     const hideMenu = () => {
         setShowMenu(false)
     }
+
+    const logoutUser = async() => {
+        await dispatch(logout());
+        await dispatch(RESET_AUTH());
+        navigate('/login')
+   } 
 
     const cart = (
         <span className={styles.cart}>
@@ -63,31 +75,50 @@ const Header = () => {
                             <IoIosClose size={22} color='#fff' onClick={hideMenu}/>
                       </li>
                       <li>
-                          <NavLink to='/shop' className={activeLink}>
+                          <ShowOnLogin>
+                              <NavLink to='/shop' className={activeLink}>
                               Shop
                             </NavLink>
+                          </ShowOnLogin>
                       </li>
                   </ul> 
                   
                   <div className={styles['header-right']}>
                       <span className={styles.links}>
-                          <NavLink to={'login'} className={activeLink}>
+                          
+                          <ShowOnLogout>
+                              <NavLink to={'login'} className={activeLink}>
                               Login
-                          </NavLink>
+                                </NavLink>
+                          </ShowOnLogout>
+                          
+                          <ShowOnLogout>
                           <NavLink to={'register'} className={activeLink}>
                               Register
                           </NavLink>
+                          </ShowOnLogout>
+
+                          <ShowOnLogin>
                           <NavLink to={'order-history'} className={activeLink}>
                               My Order
                           </NavLink>
+                          </ShowOnLogin>
+
+                          <ShowOnLogin>
+                          <Link to={'/'} onClick={logoutUser}>
+                              Logout
+                          </Link>
+                          </ShowOnLogin>
                       </span>
                       {cart}
                   </div>
               </nav>
-              <div className={styles['menu-icon']}>
+              
+                  <div className={styles['menu-icon']}>
                   {cart}
                     <BiMenuAltRight size={28} onClick={toggleMenu} />
               </div>
+             
 
             </div>
     </header>
