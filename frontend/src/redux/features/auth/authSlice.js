@@ -96,7 +96,7 @@ export const updatePhoto = createAsyncThunk(
     "auth/updatePhoto",
     async (userData, thunkAPI) => {
         try{
-            return await authService.updatPhoto(userData);
+            return await authService.updatePhoto(userData);
         } catch(error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
             return thunkAPI.rejectWithValue(message);
@@ -252,7 +252,7 @@ const authSlice = createSlice({
                 state.isloggedIn = true;
                 state.user = action.payload;
                 toast.success('profile image updated')
-                // console.log(action.payload);
+                console.log('from authSlice',action.payload.photo);
             })
             .addCase(updatePhoto.rejected, (state, action) => {
                 state.isLoading = false;

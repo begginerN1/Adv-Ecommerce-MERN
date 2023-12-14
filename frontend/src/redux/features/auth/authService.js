@@ -43,7 +43,7 @@ const updateUser = async (userData) => {
     const response = await axios.patch(`${API_URL}updateuser`, userData);
     return response.data;
 };
-const updatPhoto = async (userData) => {
+const updatePhoto = async (userData) => {
     
     const response = await axios.patch(`${API_URL}updatephoto`, userData);
     return response.data;
@@ -56,7 +56,7 @@ const authService = {
     getLoginStatus,
     getUser,
     updateUser,
-    updatPhoto
+    updatePhoto
 };
 
 export default authService;
