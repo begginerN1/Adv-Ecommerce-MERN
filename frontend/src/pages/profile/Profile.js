@@ -10,6 +10,7 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
 import { app } from '../../firebase'
 import { toast } from 'react-toastify'
+import { shortenText } from '../../utils'
 
 
 const Profile = () => {
@@ -20,7 +21,7 @@ const Profile = () => {
         phone: user?.phone || '',
         role: user?.role || '',
         photo:user?.photo || '',
-        address: user?.address || {
+        address: {
             address: user?.address?.address || '',
             state: user?.address?.state || '',
             country: user?.address?.country || ''
@@ -47,7 +48,7 @@ const Profile = () => {
                 phone: user?.phone || '',
                 role: user?.role || '',
                 photo:user?.photo || '',
-                address: user?.address || {
+                address: {
                         address: user?.address?.address || '',
                         state: user?.address?.state || '',
                         country: user?.address?.country || ''
@@ -94,7 +95,7 @@ const Profile = () => {
         uploadTask.on('state_changed',
             (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                toast.info('upload is ' + progress + ' % done')
+                console.log('upload is ' + progress + ' % done')
             },
             (error) => {
                 toast.error(error)
@@ -109,16 +110,8 @@ const Profile = () => {
             }
         ) 
 
-        // const userData = {
-        //     photo: imageUrl //profileImage ? imageUrl : profile.photo
-        // };
-
-        // await dispatch(updatePhoto(userData));
-        // // setImagePreview(null);
+        setImagePreview(null);
     };
-
-    
-    
 
   return (
       <>
@@ -234,6 +227,18 @@ const Profile = () => {
           
     </>
   )
+}
+
+export const Username = () => {
+    const { user } = useSelector(state => state.auth)
+    
+    const username = user?.name || '...';
+
+    return (
+        <span style={{color:'#ff7722'}}>
+            Hi, {shortenText(username, 10)} |
+        </span>
+    )
 }
 
 export default Profile

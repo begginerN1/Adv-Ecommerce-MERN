@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
     address: {
         type: Object,
     }
-});
+},{timestamps:true});
 
 module.exports = mongoose.model('User', userSchema);
 

@@ -5,7 +5,7 @@ const User = require('../models/UserModel');
 const errorHandler = require('../middleware/errorMiddleware');
 const { json } = require('express');
 
-const generateToken = (id) => {
+const generateToken = (id, role) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
        expiresIn: '1d'
    });
@@ -31,7 +31,10 @@ const loginUser = asyncHandler(async(req, res, next) => {
         return next(errorHandler(400, "incorrect credentials, try again"));
     }
     const {password:pass, ...rest } = isUser._doc;
-        const token = generateToken(isUser._id);
+    const token = generateToken(isUser._id);
+    const decodedToken = jwt.decode(token)
+    console.log(decodedToken);
+    
         res.cookie('access_token', token, {
             path: '/',
             httpOnly: true,
@@ -145,7 +148,7 @@ const registerUser = asyncHandler(async (req, res) => {
     // generate tokem
     if (user) {
         const {password:pass, ...rest } = user._doc;
-        const token = generateToken(user._id);
+        const token = generateToken(user._id, rest.role);
         res.cookie('access_token', token, {
             path: '/',
             httpOnly: true,

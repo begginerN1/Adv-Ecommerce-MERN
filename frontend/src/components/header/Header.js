@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import styles from './Header.module.scss';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaCartShopping } from "react-icons/fa6";
+import { FaUserCircle } from "react-icons/fa";
 import { BiMenuAltRight } from "react-icons/bi";
 import { IoIosClose } from "react-icons/io";
 import { useDispatch } from 'react-redux';
 import { RESET_AUTH, logout } from '../../redux/features/auth/authSlice';
 import ShowOnLogin, { ShowOnLogout } from '../hiddenLink/hiddenLink';
+import { Username } from '../../pages/profile/Profile';
 
 
 export const logo = (
@@ -75,6 +77,7 @@ const Header = () => {
                             <IoIosClose size={22} color='#fff' onClick={hideMenu}/>
                       </li>
                       <li>
+                          
                           <ShowOnLogin>
                               <NavLink to='/shop' className={activeLink}>
                               Shop
@@ -86,6 +89,13 @@ const Header = () => {
                   <div className={styles['header-right']}>
                       <span className={styles.links}>
                           
+                            <ShowOnLogin>
+                              <NavLink to='/profile' className={activeLink}>
+                                  <FaUserCircle size={16} color='#ff7722' />
+                                  <Username/>
+                            </NavLink>
+                          </ShowOnLogin>
+
                           <ShowOnLogout>
                               <NavLink to={'login'} className={activeLink}>
                               Login
