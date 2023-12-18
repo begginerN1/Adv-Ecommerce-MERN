@@ -267,5 +267,5 @@ const authSlice = createSlice({
 });
 
 export const {RESET_AUTH} = authSlice.actions
-
+export const selectUser = (state) => state.auth.user;
 export default authSlice.reducer

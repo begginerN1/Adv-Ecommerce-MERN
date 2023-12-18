@@ -6,7 +6,7 @@ const {verifyUser, adminOnly}=require('../middleware/authMiddleware')
 router.post('/create', verifyUser, createOrder);
 router.get('/get', verifyUser, getOrder);
 router.get('/get/:id', verifyUser, getAOrder);
-router.delete('/delete/:id', verifyUser, adminOnly,deleteOrder);
+// router.delete('/delete/:id', verifyUser, adminOnly,deleteOrder);
 router.patch('/update/:id', verifyUser, adminOnly,updateOrder);
 
 module.exports = router;

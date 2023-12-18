@@ -8,9 +8,10 @@ import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getLoginStatus } from './redux/features/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getLoginStatus, getUser } from './redux/features/auth/authSlice';
 import Profile from './pages/profile/Profile';
+import Admin from './pages/admin/Admin';
 
 
 
@@ -19,10 +20,17 @@ import Profile from './pages/profile/Profile';
 function App() {
   axios.defaults.withCredentials = true;
   const dispatch = useDispatch();
+  const { isloggedIn, user } = useSelector(state => state.auth);
   
   useEffect(() => {
     dispatch(getLoginStatus())
-  },[dispatch])
+  }, [dispatch])
+  
+  useEffect(() => {
+    if (isloggedIn && user === null) {
+      dispatch(getUser())
+    }
+  },[dispatch, isloggedIn, user])
 
   return (
     <>
@@ -33,7 +41,10 @@ function App() {
           <Route path='/' element={<Home/> } />
           <Route path='/login' element={<Login/> } />
           <Route path='/register' element={<Register/> } />
-          <Route path='/profile' element={<Profile/> } />
+          <Route path='/profile' element={<Profile />} />
+          
+          <Route path='/admin/*' element={<Admin />} />
+          
         </Routes>
         <Footer />
       </BrowserRouter>
