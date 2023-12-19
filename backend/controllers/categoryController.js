@@ -9,7 +9,7 @@ const slugify=require('slugify')
 const getCategory = asyncHandler(async(req, res, next) => {
     const category = await Category.find().sort("-createdAt");
     if (!category) {
-        return next(errorHandler(400,"no such category found!"))
+        return next(errorHandler(400,"no category found!"))
     }
    
     res.status(200).json(category);
@@ -25,9 +25,9 @@ const getACategory = asyncHandler(async(req, res, next) => {
 })
 // delete a product
 const deleteCategory = asyncHandler(async(req, res, next) => {
-    const category = await Category.findOneAndDelete({slug:req.params.slug.toLocaleLowerCase()});
+    const category = await Category.findOneAndDelete({slug:req.params.slug});
     if (!category) {
-        return next(errorHandler(400,"no such category found!"))
+        return next(errorHandler(400,"unfortunately, no such category found!"))
     }
    
     res.status(200).json(`${category.name} was successfully deleted`);
