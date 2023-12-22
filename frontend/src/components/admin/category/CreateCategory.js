@@ -33,7 +33,7 @@ const CreateCategory = () => {
               <p>Use this form to create a <b>category</b></p>
               <Card cardClass={"card"}>
                   <br />
-                  <form onSubmit={saveCategory} style={{boxShadow: '0 0 15px 0 rgba(70, 69, 69,.3)', padding:'10px 20px', borderRadius:'.75rem'}}>
+                  <form onSubmit={saveCategory}>
                       <label>Category Name: </label>
                       <input
                           type="text"

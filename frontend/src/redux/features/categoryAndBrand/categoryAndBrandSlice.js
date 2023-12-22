@@ -80,6 +80,20 @@ export const getBrand = createAsyncThunk(
     }
 )
 
+//delete a  brand
+export const deleteBrand = createAsyncThunk(
+    "category/deleteBrand",
+    async (slug, thunkAPI) => {
+        try{
+            return await catAndBrand.deleteBrand(slug);
+        } catch(error) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+        
+    }
+)
+
 const categoryAndBrandSlice = createSlice({
   name: "category",
   initialState,
@@ -101,7 +115,7 @@ const categoryAndBrandSlice = createSlice({
                 state.isSuccess = true;
                 state.isError = false;
                 toast.success("category created successfully!");
-                console.log(action.payload);
+                // console.log(action.payload);
                 
             })
             .addCase(createCategory.rejected, (state, action) => {
@@ -158,7 +172,7 @@ const categoryAndBrandSlice = createSlice({
                 state.isError = false;
                 // state.brand = action.payload
                 toast.success("brand created successfully!");
-                console.log(action.payload);
+                // console.log(action.payload);
                 
             })
             .addCase(createBrand.rejected, (state, action) => {
@@ -189,6 +203,23 @@ const categoryAndBrandSlice = createSlice({
                 state.category = [];
                 state.message = action.payload;
                 toast.error(action.payload);
+            })
+            .addCase(deleteBrand.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteBrand.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = false;
+                toast.success(action.payload);
+                // console.log(action.payload);
+            })
+            .addCase(deleteBrand.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = false;
+                state.isError = true;
+                state.message = action.payload;
+                toast.error(action.payload)
             })
     }
 });

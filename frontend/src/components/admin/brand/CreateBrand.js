@@ -43,7 +43,7 @@ const CreateBrand = () => {
               <p>Use this form to create a <b>brand</b></p>
               <Card cardClass={"card"}>
                   <br />
-                  <form onSubmit={saveBrand} style={{boxShadow: '0 0 15px 0 rgba(70, 69, 69,.3)', padding:'10px 20px', borderRadius:'.75rem'}}>
+                  <form onSubmit={saveBrand} >
                       <label>Brand Name: </label>
                       <input
                           type="text"

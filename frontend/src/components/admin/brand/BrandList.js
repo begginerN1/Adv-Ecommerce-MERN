@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getBrand } from '../../../redux/features/categoryAndBrand/categoryAndBrandSlice';
+import { deleteBrand, getBrand } from '../../../redux/features/categoryAndBrand/categoryAndBrandSlice';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import { FaTrashAlt } from 'react-icons/fa';
@@ -22,7 +22,7 @@ const BrandList = () => {
             buttons: [
                 {
                     label: 'Delete',
-                    onClick: () => deleteBrand(slug)
+                    onClick: () => deleteBrand_(slug)
                 },
                 {
                     label: 'Cancel',
@@ -32,9 +32,9 @@ const BrandList = () => {
         });
     };
     
-    const deleteBrand = async (slug) => {
-        // await dispatch(deleteCategory(slug));
-        // await dispatch(getCategories());
+    const deleteBrand_ = async (slug) => {
+        await dispatch(deleteBrand(slug));
+        await dispatch(getBrand());
     }
     
 
