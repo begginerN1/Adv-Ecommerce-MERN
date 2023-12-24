@@ -43,7 +43,8 @@ const updateProduct = asyncHandler(async (req, res, next) => {
             brand : req.body.brand,
             price : req.body.price,
             color : req.body.color,
-            quantity : req.body.quantity,
+            quantity: req.body.quantity,
+            image: req.body.image
         }
     }, { new: true })
     

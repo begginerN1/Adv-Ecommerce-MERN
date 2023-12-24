@@ -93,7 +93,7 @@ const ProductForm = ({
                   <label >Regular Price: </label>
                   <input
                       type="number"
-                      placeholder='product regular prices'
+                      placeholder='product regular price'
                       name='regularPrice'
                       required
                       value={product?.regularPrice}
@@ -103,7 +103,7 @@ const ProductForm = ({
                   <label >Price: </label>
                   <input
                       type="number"
-                      placeholder='product regular prices'
+                      placeholder='product price'
                       name='price'
                       
                       value={product?.price}
@@ -113,7 +113,7 @@ const ProductForm = ({
                   <label >Quantity: </label>
                   <input
                       type="number"
-                      placeholder='product regular prices'
+                      placeholder='product quantity'
                       name='quantity'
                       required
                       value={product?.quantity}
@@ -121,7 +121,7 @@ const ProductForm = ({
                   />
 
                   <label >Description: </label>
-                  <textarea name="description" value={product?.description} cols="30" rows="10" placeholder='enter description here' onChange={handleInputChange}/>
+                  <textarea name="description" value={product?.description} cols="30" rows="10" placeholder='enter description here' onChange={handleInputChange} required/>
                   {/* <ReactQuill theme="snow" value={description} onChange={setDescription} /> */}
 
                   <div>

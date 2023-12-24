@@ -12,7 +12,6 @@ const UploadWidget = ({ files, setFiles, product }) => {
     const [images, setImages] = useState([]);
     const [progress, setProgress] = useState([]);
     const [uploading, setUploading] = useState(false);
-    const [imageUrls, setImgUrls] = useState([]);
     
     const addImages = (e) => {
         const selectedFiles = [...e.target.files];
@@ -67,7 +66,7 @@ const UploadWidget = ({ files, setFiles, product }) => {
         return new Promise((resolve, reject) => {
             const storage = getStorage(app);
             const fileName = new Date().getTime() + file.name;
-            const storageRef = ref(storage, `product_images/${fileName}`);
+            const storageRef = ref(storage, `product_images/${fileName}__${product.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
             uploadTask.on(
                 "state_changed",

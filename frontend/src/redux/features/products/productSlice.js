@@ -18,10 +18,62 @@ const initialState = {
 
 // create a product
 export const createProduct = createAsyncThunk(
-    "category/createProduct",
+    "product/createProduct",
     async (formData, thunkAPI) => {
         try{
             return await productService.createProduct(formData);
+        } catch(error) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+        
+    }
+)
+// get products
+export const getProducts = createAsyncThunk(
+    "product/getProducts",
+    async (_, thunkAPI) => {
+        try{
+            return await productService.getProducts();
+        } catch(error) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+        
+    }
+)
+// get products
+export const deleteProduct = createAsyncThunk(
+    "product/deleteProduct",
+    async (formData, thunkAPI) => {
+        try{  
+            return await productService.deleteProduct(formData);
+        } catch(error) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+        
+    }
+)
+// get product
+export const getAProduct = createAsyncThunk(
+    "product/getAproduct",
+    async (formData, thunkAPI) => {
+        try{  
+            return await productService.getAProduct(formData);
+        } catch(error) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+        
+    }
+)
+// update product
+export const updateProduct = createAsyncThunk(
+    "product/updateProduct",
+    async ({id, formData}, thunkAPI) => {
+        try{  
+            return await productService.updateProduct(id,formData);
         } catch(error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
             return thunkAPI.rejectWithValue(message);
@@ -33,21 +85,111 @@ export const createProduct = createAsyncThunk(
 const productSlice = createSlice({
   name: "product",
   initialState,
-    reducers: {},
+    reducers: {
+        RESET_PROD(state) {
+            state.isError = false;
+            state.isSuccess = false;
+            state.isLoading = false;
+            state.message ='' 
+      },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(createProduct.pending, (state) => {
-                state.isLoading = false;
+                state.isLoading = true;
             })
             .addCase(createProduct.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
-                state.products=action.payload
-                toast.success("product created successfully!");
-                // console.log(action.payload);
+                if (action.payload && action.payload.hasOwnProperty("message")) {
+                   toast.error(action.payload)
+                } else {
+                    state.message="product created successfully!"
+                    toast.success("product created successfully!");
+                }
+                
             })
             .addCase(createProduct.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = false;
+                state.isError = true;
+                state.message = action.payload;
+                toast.error(action.payload);
+            })
+            .addCase(getProducts.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getProducts.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = false;
+                state.products=action.payload
+                // toast.success("product loaded successfully!");
+                // console.log(action.payload);
+            })
+            .addCase(getProducts.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = false;
+                state.isError = true;
+                state.message = action.payload;
+                toast.error(action.payload);
+            })
+            .addCase(deleteProduct.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteProduct.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = false;
+                // state.products=action.payload
+                toast.success(action.payload);
+                // console.log(action.payload);
+            })
+            .addCase(deleteProduct.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = false;
+                state.isError = true;
+                state.message = action.payload;
+                toast.error(action.payload);
+            })
+            .addCase(getAProduct.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getAProduct.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = false;
+                state.product=action.payload
+                // toast.success(action.payload);
+                // console.log(action.payload);
+            })
+            .addCase(getAProduct.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = false;
+                state.isError = true;
+                state.message = action.payload;
+                toast.error(action.payload);
+            })
+            .addCase(updateProduct.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateProduct.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = false;
+                state.product=action.payload
+                
+                if (action.payload && action.payload.hasOwnProperty("message")) {
+                    toast.error(action.payload.message)
+                } else {
+                    state.message = 'product updated successfully!'
+                    toast.success('product updated successfully!')
+                }
+                toast.success(action.payload);
+                // console.log(action.payload);
+            })
+            .addCase(updateProduct.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = false;
                 state.isError = true;
@@ -57,6 +199,6 @@ const productSlice = createSlice({
   }
 });
 
-// export const {} = productSlice.actions
+export const {RESET_PROD} = productSlice.actions
 
 export default productSlice.reducer

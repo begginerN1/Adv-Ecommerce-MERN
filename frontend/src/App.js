@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLoginStatus, getUser } from './redux/features/auth/authSlice';
 import Profile from './pages/profile/Profile';
 import Admin from './pages/admin/Admin';
+import AdminOnly from './components/hiddenLink/AdminOnly';
 
 
 
@@ -43,7 +44,11 @@ function App() {
           <Route path='/register' element={<Register/> } />
           <Route path='/profile' element={<Profile />} />
           
-          <Route path='/admin/*' element={<Admin />} />
+          <Route path='/admin/*' element={
+            <AdminOnly>
+              <Admin/>
+            </AdminOnly>
+            } />
           
         </Routes>
         <Footer />

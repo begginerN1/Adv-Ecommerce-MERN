@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import ProductForm from '../productForm/ProductForm';
 import "./AddProduct.scss";
 import { getBrand, getCategories } from '../../../redux/features/categoryAndBrand/categoryAndBrandSlice';
-import { createProduct } from '../../../redux/features/products/productSlice';
+import { RESET_PROD, createProduct, deleteProduct, getProducts } from '../../../redux/features/products/productSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -20,7 +20,7 @@ const initialState = {
 }
 
 const AddProducts = () => {
-    const { isLoading } = useSelector(state => state.product);
+    const { isLoading, message } = useSelector(state => state.product);
     const { category: categories } = useSelector(state => state.category);
     const { brand: brands } = useSelector(state => state.brand);
     const dispatch = useDispatch();
@@ -29,7 +29,6 @@ const AddProducts = () => {
     const [product, setProduct] = useState(initialState);
     const [filteredBrands, setFilteredBrands] = useState([]);
     const [files, setFiles] = useState([]);
-    // const [description, setDescription] = useState("");
 
     const { name, category, brand, price, quantity, color, regularPrice, description } = product;
 
@@ -76,8 +75,16 @@ const AddProducts = () => {
         }
         console.log(formData);
         await dispatch(createProduct(formData));
-        navigate('/admin/all-product');
+        await dispatch(getProducts);
+        
     };
+
+    useEffect(() => {
+        if (message==='product created successfully!') {
+         navigate('/admin/all-product');
+        }   
+        dispatch(RESET_PROD());
+    },[message, navigate, dispatch])
 
     const handleInputChange=(e) => {
         setProduct({ ...product, [e.target.name]: e.target.value });

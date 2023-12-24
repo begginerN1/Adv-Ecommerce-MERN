@@ -6,7 +6,7 @@ const couponSchema = new mongoose.Schema({
         required: [true, "please, add a coupon"],
         trim: true,
         unique: true,
-        minLength:[6,"too short"],
+        minLength:[5,"too short"],
         maxLength:[12,"too long"],
     },
     discount: {
