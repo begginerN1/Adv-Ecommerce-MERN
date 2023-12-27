@@ -5,23 +5,44 @@ import { FaListAlt } from 'react-icons/fa'
 import Search from '../../seach/Search'
 import ProductItem from '../productItem/ProductItem';
 import {useDispatch, useSelector} from 'react-redux'
-import { FILTER_BY_SEARCH } from '../../../redux/features/products/filterSlice'
+import { FILTER_BY_SEARCH, SORT_PRODUCTS } from '../../../redux/features/products/filterSlice'
+import ReactPaginate from 'react-paginate'
 
 
 const ProductList = ({ products }) => {
   const [grid, setGrid] = useState(true);
   const [search, setSearch] = useState('');
+  const [sort, setSort] = useState('latest');
   const { filteredProducts } = useSelector(state => state.filter);
   const dispatch = useDispatch();
 
 
   useEffect(() => {
     dispatch(FILTER_BY_SEARCH({ products, search }));
-    console.log(filteredProducts);
     
   }, [dispatch, search, products]);
 
+  useEffect(() => {
+    dispatch(SORT_PRODUCTS({ products, sort }));
+    
+  }, [dispatch, sort, products]);
 
+// PAGINATION
+    const itemsPerPage = 9
+    const [itemOffset, setItemOffset] = useState(0);
+
+    const endOffset = itemOffset + itemsPerPage;
+    const currentItems = filteredProducts?.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
+
+    const handlePageClick = (event) => {
+      const newOffset = (event.selected * itemsPerPage) % filteredProducts.length;
+      console.log(
+        `User requested page number ${event.selected}, which is offset ${newOffset}`
+      );
+      setItemOffset(newOffset);
+  };
+  // PAGINATION
   
   return (
     <div className={styles['product-list']}>
@@ -40,7 +61,7 @@ const ProductList = ({ products }) => {
             onClick={()=>setGrid(false)}
           />
           <p>
-            <b>{products.length} </b>products found
+            <b>{currentItems.length} </b>products found
           </p>
           </div>
 
@@ -49,8 +70,8 @@ const ProductList = ({ products }) => {
           </div>
 
           <div className={styles.sort}>
-            <label>Sort by</label>
-            <select>
+          <label>Sort by</label>
+            <select value={sort} onChange={(e)=>setSort(e.target.value)}>
               <option value="latest">Latest</option>
               <option value="lowest-price">Lowest Price</option>
               <option value="highest-price">Highest Price</option>
@@ -67,7 +88,7 @@ const ProductList = ({ products }) => {
         <p>no products to display</p>
         ) : (
             <>
-              {filteredProducts.map(product => {
+              {currentItems.map(product => {
                 return (
                   <div key={product._id}>
                     <ProductItem {... product} grid={grid} product={product} />
@@ -77,7 +98,20 @@ const ProductList = ({ products }) => {
             </>
         )}
       </div>
-          
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={pageCount}
+            previousLabel="< previous"
+            renderOnZeroPageCount={null}
+            containerClassName='pagination'
+            pageLinkClassName='page-num'
+            previousLinkClassName='page-num'
+            nextLinkClassName='page-num'
+            activeClassName='activePage'
+          />
     </div>
   )
 }

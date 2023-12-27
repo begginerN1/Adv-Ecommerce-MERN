@@ -12,6 +12,6 @@ export const store = configureStore({
         brand: catReducer,
         product: productReducer,
         coupon: couponReducer,
-        filter: filterReducer
+        filter: filterReducer,
     }
 })

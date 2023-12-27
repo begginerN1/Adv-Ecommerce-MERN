@@ -91,7 +91,21 @@ const productSlice = createSlice({
             state.isSuccess = false;
             state.isLoading = false;
             state.message ='' 
-      },
+        },
+        GET_PRICE_RANGE(state,action) {
+            const { products } = action.payload
+            const array = [];
+
+            products.map((prod) => {
+                const price = prod.price;
+                return array.push(price);
+            });
+            const max = Math.max(...array);
+            const min = Math.min(...array);
+
+            state.minPrice = min;
+            state.maxPrice = max;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -199,6 +213,6 @@ const productSlice = createSlice({
   }
 });
 
-export const {RESET_PROD} = productSlice.actions
+export const {RESET_PROD,GET_PRICE_RANGE} = productSlice.actions
 
 export default productSlice.reducer
