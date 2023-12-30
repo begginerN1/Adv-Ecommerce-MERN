@@ -15,18 +15,16 @@ const EditProducts = () => {
   const [product, setProduct] = useState(productEdit);
   const { category: categories } = useSelector(state => state.category);
   const { brand: brands } = useSelector(state => state.brand);
+  const [description, setDescription]=useState('')
   
 
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-// refresh product, brand and category
   useEffect(() => {
 
     const refreshState = async () => {
-      // await dispatch(getCategories());
-      // await dispatch(getBrand());
       await dispatch(getAProduct(id))
     }
     refreshState();
@@ -35,7 +33,7 @@ const EditProducts = () => {
 
   useEffect(() => {
     setProduct(productEdit);
-
+    setDescription(productEdit && productEdit.description ? productEdit.description : "");
     if (productEdit && productEdit.image) {
       setFiles(productEdit.image)
     }
@@ -66,7 +64,7 @@ const EditProducts = () => {
             quantity: Number(product.quantity),
             regularPrice: Number(product.regularPrice),
             price: Number(product.price),
-            description: product.description,
+            description,
             image: files
         }
         console.log(formData);
@@ -99,6 +97,8 @@ const EditProducts = () => {
                   setFiles={setFiles}
                   isEditing={true}
                   filteredBrands={filteredBrands}
+                  description={description}
+                  setDescription={setDescription}
               />
 
           </div> 

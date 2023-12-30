@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Header.module.scss';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaCartShopping } from "react-icons/fa6";
 import { FaUserCircle } from "react-icons/fa";
 import { BiMenuAltRight } from "react-icons/bi";
 import { IoIosClose } from "react-icons/io";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RESET_AUTH, logout } from '../../redux/features/auth/authSlice';
 import ShowOnLogin, { ShowOnLogout } from '../hiddenLink/hiddenLink';
 import { Username } from '../../pages/profile/Profile';
 import { AdminOnlyLink } from '../hiddenLink/AdminOnly';
+import { CART_LOGOUT, TOTAL_CART } from '../../redux/features/cart/cartSlice';
+
 
 
 export const logo = (
@@ -30,6 +32,11 @@ const Header = () => {
     const [scrollPage, setScrollPage] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { cartItems, cartTotalQuantity } = useSelector(state => state.cart);
+
+    useEffect(() => {
+    dispatch(TOTAL_CART());
+  },[dispatch,cartItems])
 
     const fixedNavBar = () => {
         if (window.scrollY > 50) {
@@ -50,6 +57,7 @@ const Header = () => {
     const logoutUser = async() => {
         await dispatch(logout());
         await dispatch(RESET_AUTH());
+        
         navigate('/login')
    } 
 
@@ -58,7 +66,7 @@ const Header = () => {
             <Link to={'/cart'}>
                 Cart 
                 <FaCartShopping size={20} />
-                <p>0</p>
+                <p style={{color:'orange'}}>{cartTotalQuantity}</p>
             </Link>
 
         </span>

@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { RESET_AUTH, login } from '../../redux/features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../components/loader/Loader';
+import { getCart } from '../../redux/features/cart/cartSlice';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -36,9 +37,10 @@ const Login = () => {
     
     useEffect(() => {
         if (isSuccess && isloggedIn) {
-            navigate('/');
-            dispatch(RESET_AUTH())
+            // navigate('/');
+            dispatch(getCart());
         }
+        dispatch(RESET_AUTH())
     },[isSuccess, isloggedIn, dispatch, navigate])
 
     return (

@@ -1,9 +1,16 @@
 export const shortenText = (text, n) => {
-    if (text.length > n) {
+    if (text?.length > n) {
         const shortenedText = text.substring(0, n).concat("...")
         return shortenedText
     }
     return text
+}
+
+// remove HTMLTags
+
+export const removeHTMLTags = (input) => {
+    const regex = /<[^>]+>/g;
+    return input.replace(regex,"")
 }
 
 //validate email

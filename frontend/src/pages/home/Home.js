@@ -1,3 +1,4 @@
+import { useDispatch, useSelector } from "react-redux";
 import ProductCarousel from "../../components/carusel/Carusel";
 import CarouselItem from "../../components/carusel/CaruselItem";
 import { productData, productDataPhone } from "../../components/carusel/data";
@@ -6,6 +7,8 @@ import Slider from "../../components/slider/Slider"
 import HomeInfoBox from "./HomInfoBox";
 import "./Home.scss";
 import ProductCategory from "./ProductCategory";
+import { useEffect } from "react";
+import { getProducts } from "../../redux/features/products/productSlice";
 
 
 const PageHeading = ({ heading, btnText }) => {
@@ -21,26 +24,79 @@ const PageHeading = ({ heading, btnText }) => {
 }
 
 const Home = () => {
-  const productss = productData.map((item) => (
-    <div key={item.id}>
+
+  const {products }=useSelector(state=>state.product)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const refreshProds = async()=> {
+  await dispatch(getProducts());
+    }
+refreshProds();
+  },[dispatch])
+
+  const latest = products?.filter((prod) => {
+    return prod.quantity > 0
+  })
+    ?.filter((prod, index) => {
+      return index < 7
+    });
+  
+  const phones = products?.filter((prod) => {
+    return prod.quantity > 0
+  })
+    ?.filter((prod) => {
+      return prod.category === 'Phone'
+    })
+    ?.filter((prod, index) => {
+      return index < 7
+    });
+
+
+  const latestProducts = latest.map((item) => (
+    <div key={item._id}>
       <CarouselItem
         name={item.name}
-        url={item.imageurl}
+        url={item.image[0]}
         price={item.price}
+        regularPrice={item.regularPrice}
         description={item.description}
+        product={item}
       />
     </div>
   ))
-  const productsPhone = productDataPhone.map((item) => (
-    <div key={item.id}>
+  const phoneProducts = phones.map((item) => (
+    <div key={item._id}>
       <CarouselItem
         name={item.name}
-        url={item.imageurl}
+        url={item.image[0]}
         price={item.price}
+        regularPrice={item.regularPrice}
         description={item.description}
+        product={item}
       />
     </div>
   ))
+  // const productss = productData.map((item) => (
+  //   <div key={item.id}>
+  //     <CarouselItem
+  //       name={item.name}
+  //       url={item.imageurl}
+  //       price={item.price}
+  //       description={item.description}
+  //     />
+  //   </div>
+  // ))
+  // const productsPhone = productDataPhone.map((item) => (
+  //   <div key={item.id}>
+  //     <CarouselItem
+  //       name={item.name}
+  //       url={item.imageurl}
+  //       price={item.price}
+  //       description={item.description}
+  //     />
+  //   </div>
+  // ))
   return (
       <>
       <Slider /> 
@@ -48,7 +104,7 @@ const Home = () => {
         <div className="container">
           <HomeInfoBox />
           <PageHeading heading={"Latest Products"} btnText={"Shop Now >>>"} />
-          <ProductCarousel products={productss}/>
+          <ProductCarousel products={latestProducts}/>
         </div>
       </section>
       <section className="--bg-grey">
@@ -62,7 +118,7 @@ const Home = () => {
         <div className="container">
           
           <PageHeading heading={"Mobile Phones"} btnText={"Shop Now >>>"} />
-          <ProductCarousel products={productsPhone}/>
+          <ProductCarousel products={phoneProducts}/>
         </div>
       </section>
       <FooterLinks/>

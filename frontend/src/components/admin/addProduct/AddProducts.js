@@ -16,7 +16,6 @@ const initialState = {
     color: "",
     price: "",
     regularPrice: "",
-    description:""
 }
 
 const AddProducts = () => {
@@ -27,10 +26,11 @@ const AddProducts = () => {
     const navigate=useNavigate()
 
     const [product, setProduct] = useState(initialState);
+    const [description, setDescription]=useState('')
     const [filteredBrands, setFilteredBrands] = useState([]);
     const [files, setFiles] = useState([]);
 
-    const { name, category, brand, price, quantity, color, regularPrice, description } = product;
+    const { name, category, brand, price, quantity, color, regularPrice } = product;
 
     // filtered brand
     const filterBrands=(selectedCategory) => {
@@ -70,12 +70,12 @@ const AddProducts = () => {
             quantity: Number(quantity),
             regularPrice: Number(regularPrice),
             price: Number(price),
-            description,
+            description:description,
             image: files
         }
-        console.log(formData);
         await dispatch(createProduct(formData));
         await dispatch(getProducts);
+        console.log(formData);
         
     };
 
@@ -110,6 +110,8 @@ const AddProducts = () => {
                   setFiles={setFiles}
                   isEditing={false}
                   filteredBrands={filteredBrands}
+                  description={description}
+                  setDescription={setDescription}
               />
 
           </div> 

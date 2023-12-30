@@ -18,16 +18,17 @@ const ViewProducts = () => {
   const { isloggedIn } = useSelector(state => state.auth);
   const { products, isLoading } = useSelector(state => state.product)
 
-  const refreshProducts = async () => {
-    await dispatch(getProducts())
-  }
-
   useEffect(() => {
+
+    const refreshProducts = async () => {
+      await dispatch(getProducts());
+      
+  }
     if (isloggedIn) {
       refreshProducts();
     }
     
-  }, [isloggedIn, dispatch, products])
+  }, [isloggedIn, dispatch])
 
  
     const itemsPerPage = 5

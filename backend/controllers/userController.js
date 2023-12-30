@@ -118,6 +118,31 @@ const updatePhoto = asyncHandler(async(req, res) => {
 
 
 })
+// save cart
+const saveCart = asyncHandler(async (req, res) => {
+    const { cartItems } = req.body;
+    const user = await User.findByIdAndUpdate(req.user.id, {
+        $set: { cartItems }
+    }, { new: true });
+    
+    if (!user) {
+        return next(errorHandler(400, "failed to update user cart data"))
+    }
+
+    res.status(200).json("cart data saved to userDB");
+});
+
+
+// get user cart
+const getCart = asyncHandler(async(req, res) => {
+    
+    const user = await User.findById(req.user.id)
+    
+    if (!user) {
+         return next(errorHandler(400,"no such user found!"))
+    }
+    res.status(200).json(user.cartItems);
+})
 
 //register User
 const registerUser = asyncHandler(async (req, res) => {
@@ -175,6 +200,8 @@ module.exports = {
     getUser,
     getLoginStatus,
     updateUser,
-    updatePhoto
+    updatePhoto,
+    saveCart,
+    getCart
 }
 

@@ -113,7 +113,8 @@ const authSlice = createSlice({
             state.isError = false;
             state.isSuccess = false;
             state.isLoading = false;
-            state.message ='' 
+            state.message = '' 
+            localStorage.setItem('cartItems', JSON.stringify([]));
       },
     },
     extraReducers: (builder) => {
